@@ -2,6 +2,7 @@ import { useBreakpointValue, useColorModeValue } from "@chakra-ui/react"
 import { useWeb3React } from "@web3-react/core"
 import Layout from "components/common/Layout"
 import LinkPreviewHead from "components/common/LinkPreviewHead"
+import PairGame from "components/guess-the-guild/PairGame"
 import { GetStaticProps } from "next"
 import { GuildBase } from "types"
 import fetcher from "utils/fetcher"
@@ -42,9 +43,7 @@ const Minigame = ({ guilds }: Props): JSX.Element => {
         backgroundOffset={account ? 100 : 90}
         textColor="white"
       >
-        {guilds.map((guild) => (
-          <div key={guild.id}>{guild.name}</div>
-        ))}
+        <PairGame guilds={guilds} />
       </Layout>
     </>
   )
