@@ -8,8 +8,8 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react"
 import ColorCard from "components/common/ColorCard/ColorCard"
-import { GameDifficulty } from "pages/guess-the-guild"
 import { Crown, Lightning, Sword } from "phosphor-react"
+import { GameDifficulty } from "./hooks/useMiniGame"
 
 type Props = {
   difficulty: GameDifficulty

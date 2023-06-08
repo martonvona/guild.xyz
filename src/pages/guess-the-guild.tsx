@@ -7,8 +7,8 @@ import MiniGameDashBoard from "components/guess-the-guild/MiniGameDashboard"
 import NameGame from "components/guess-the-guild/NameGame"
 import NewHighScore from "components/guess-the-guild/NewHighScore"
 import PairGame from "components/guess-the-guild/PairGame"
+import useMiniGame from "components/guess-the-guild/hooks/useMiniGame"
 import { GetStaticProps } from "next"
-import { useEffect, useState } from "react"
 import { GuildBase } from "types"
 import fetcher from "utils/fetcher"
 
@@ -18,58 +18,21 @@ type Props = {
 
 const Minigame = ({ guilds }: Props): JSX.Element => {
   const { account } = useWeb3React()
-
   const bgColor = useColorModeValue("var(--chakra-colors-gray-800)", "#37373a") // dark color is from whiteAlpha.200, but without opacity so it can overlay the banner image
   const bgOpacity = useColorModeValue(0.06, 0.1)
   const bgLinearPercentage = useBreakpointValue({ base: "50%", sm: "55%" })
-  const [difficulty, setDifficulty] = useState<GameDifficulty>("easy")
-  const [guildsToGuess, setGuildsToGuess] = useState<GuildBase[]>(
-    guilds.slice(0, 100)
-  )
-  const [currentScore, setCurrentScore] = useState(0)
-  const [highScore, setHighScore] = useState(0)
-
-  const [game, setGame] = useState<GameStates>("name")
-
-  const addToCurrentScore = (score: number) => {
-    setCurrentScore((prev) => prev + score)
-    nextPlay()
-  }
-
-  const resetCurrentScore = () => {
-    if (currentScore > highScore) {
-      setGame("newHighScore")
-    } else {
-      setGame("gameOver")
-    }
-  }
-
-  const newGame = () => {
-    setCurrentScore(0)
-    nextPlay()
-  }
-
-  const nextPlay = () => {
-    //give a random game type
-    const gameTypes: GameStates[] = ["name", "pair"]
-    const randomGame = gameTypes[Math.floor(Math.random() * gameTypes.length)]
-    setGame(randomGame)
-  }
-
-  useEffect(() => {
-    if (difficulty === "easy") setGuildsToGuess(guilds.slice(0, 100))
-    else if (difficulty === "medium") setGuildsToGuess(guilds.slice(0, 500))
-    else if (difficulty === "hard") setGuildsToGuess(guilds.slice(0, 1000))
-  }, [difficulty])
-
-  useEffect(() => {
-    const storedHighScore = localStorage.getItem("highScore")
-    if (storedHighScore) {
-      setHighScore(parseInt(storedHighScore))
-    } else {
-      setHighScore(0)
-    }
-  }, [])
+  const {
+    gameState,
+    guildsToGuess,
+    addToCurrentScore,
+    resetCurrentScore,
+    currentScore,
+    highScore,
+    setHighScore,
+    nextRound,
+    difficulty,
+    setDifficulty,
+  } = useMiniGame({ guilds })
 
   return (
     <>
@@ -97,31 +60,31 @@ const Minigame = ({ guilds }: Props): JSX.Element => {
         textColor="white"
       >
         <Flex gap={2} direction={{ base: "column", md: "row" }}>
-          {game === "pair" && (
+          {gameState === "pair" && (
             <PairGame
               guilds={guildsToGuess}
               addToCurrentScore={addToCurrentScore}
               resetCurrentScore={resetCurrentScore}
             />
           )}
-          {game === "name" && (
+          {gameState === "name" && (
             <NameGame
               guilds={guildsToGuess}
               addToCurrentScore={addToCurrentScore}
               resetCurrentScore={resetCurrentScore}
             />
           )}
-          {game === "newHighScore" && (
+          {gameState === "newHighScore" && (
             <NewHighScore
-              startNewGame={() => {
-                newGame()
+              action={() => {
+                nextRound()
                 setHighScore(currentScore)
               }}
               highScore={currentScore}
             />
           )}
-          {game === "gameOver" && (
-            <GameOver startNewGame={newGame} score={currentScore} />
+          {gameState === "gameOver" && (
+            <GameOver action={nextRound} score={currentScore} />
           )}
           <MiniGameDashBoard
             difficulty={difficulty}
@@ -135,16 +98,17 @@ const Minigame = ({ guilds }: Props): JSX.Element => {
   )
 }
 
-export type GameDifficulty = "easy" | "medium" | "hard"
-export type GameStates = "name" | "pair" | "gameOver" | "newHighScore"
-
 export const getStaticProps: GetStaticProps = async () => {
   const guilds = await fetcher(`/guild?sort=members&limit=1000&offset=0`).catch(
     (_) => []
   )
 
+  const filteredGuilds = guilds.filter(
+    (guild: GuildBase) => guild.imageUrl !== "" && guild.imageUrl
+  )
+
   return {
-    props: { guilds },
+    props: { guilds: filteredGuilds },
     revalidate: 300,
   }
 }

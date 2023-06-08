@@ -2,13 +2,14 @@ import { Flex, Heading, Text, useColorMode } from "@chakra-ui/react"
 import Button from "components/common/Button"
 import ColorCard from "components/common/ColorCard/ColorCard"
 import { Crown } from "phosphor-react"
+import { HIGH_SCORE_KEY } from "./utils/constants"
 
 type Props = {
-  startNewGame: () => void
+  action: () => void
   highScore: number
 }
 
-const NewHighScore = ({ startNewGame, highScore }: Props): JSX.Element => {
+const NewHighScore = ({ action, highScore }: Props): JSX.Element => {
   const { colorMode } = useColorMode()
 
   return (
@@ -36,8 +37,8 @@ const NewHighScore = ({ startNewGame, highScore }: Props): JSX.Element => {
         h="10"
         colorScheme="purple"
         onClick={() => {
-          startNewGame()
-          localStorage.setItem("highScore", highScore.toString())
+          action()
+          window.localStorage.setItem(HIGH_SCORE_KEY, highScore.toString())
         }}
       >
         New game

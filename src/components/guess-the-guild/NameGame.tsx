@@ -15,6 +15,7 @@ import image from "next/image"
 import { CheckCircle, Circle, XCircle } from "phosphor-react"
 import { useEffect, useRef, useState } from "react"
 import { GuildBase } from "types"
+import { shuffle } from "./utils/shuffle"
 
 type Props = {
   guilds: GuildBase[]
@@ -90,7 +91,7 @@ const NameGame = ({
         )}
       </Flex>
       <Grid gap={2} pb={2}>
-        {guildIds?.map((id, index) => (
+        {guildIds?.map((id) => (
           <DisplayCard
             key={id}
             shadow="none"
@@ -145,17 +146,6 @@ const NameGame = ({
       </Button>
     </ColorCard>
   )
-}
-
-function shuffle(array) {
-  const newArray = [...array]
-
-  for (let i = newArray.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[newArray[i], newArray[j]] = [newArray[j], newArray[i]]
-  }
-
-  return newArray
 }
 
 export default NameGame

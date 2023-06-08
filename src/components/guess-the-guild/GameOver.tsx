@@ -4,11 +4,11 @@ import ColorCard from "components/common/ColorCard/ColorCard"
 import { Trophy } from "phosphor-react"
 
 type Props = {
-  startNewGame: () => void
+  action: () => void
   score: number
 }
 
-const GameOver = ({ startNewGame, score }: Props): JSX.Element => {
+const GameOver = ({ action, score }: Props): JSX.Element => {
   const { colorMode } = useColorMode()
 
   return (
@@ -42,7 +42,7 @@ const GameOver = ({ startNewGame, score }: Props): JSX.Element => {
         </Text>
       </Flex>
 
-      <Button h="10" colorScheme="purple" onClick={startNewGame}>
+      <Button h="10" colorScheme="purple" onClick={action}>
         New game
       </Button>
     </ColorCard>
