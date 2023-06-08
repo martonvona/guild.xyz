@@ -26,12 +26,20 @@ const NewHighScore = ({ startNewGame, highScore }: Props): JSX.Element => {
           fontWeight="bold"
           letterSpacing="wide"
           align="center"
+          pb={5}
         >
           {highScore} points
         </Text>
       </Flex>
 
-      <Button h="10" colorScheme="purple" onClick={startNewGame}>
+      <Button
+        h="10"
+        colorScheme="purple"
+        onClick={() => {
+          startNewGame()
+          localStorage.setItem("highScore", highScore.toString())
+        }}
+      >
         New game
       </Button>
     </ColorCard>

@@ -15,18 +15,24 @@ type Props = {
   difficulty: GameDifficulty
   setDifficulty: (difficulty: GameDifficulty) => void
   currentScore: number
+  highScore: number
 }
 
 const MiniGameDashBoard = ({
   difficulty,
   setDifficulty,
   currentScore,
+  highScore,
 }: Props): JSX.Element => {
   const { colorMode } = useColorMode()
   const labelColor = useColorModeValue("blackAlpha.600", "whiteAlpha.600")
 
   return (
-    <ColorCard color="transparent" colorMode={colorMode} w="fit-content">
+    <ColorCard
+      color="transparent"
+      colorMode={colorMode}
+      w={{ base: "full", md: "fit-content" }}
+    >
       <Heading
         as="h2"
         size="md"
@@ -77,7 +83,7 @@ const MiniGameDashBoard = ({
         fontWeight="bold"
         letterSpacing="wide"
       >
-        50 points
+        {highScore} points
       </Text>
       <Flex alignItems="center" gap={2} pb={2} pt={6}>
         <Text fontSize={"xs"} color="purple.500">

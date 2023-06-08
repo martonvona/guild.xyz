@@ -27,13 +27,12 @@ const Minigame = ({ guilds }: Props): JSX.Element => {
     guilds.slice(0, 100)
   )
   const [currentScore, setCurrentScore] = useState(0)
-  const [game, setGame] = useState<GameStates>("name")
+  const [highScore, setHighScore] = useState(0)
 
-  const highScore = 1
+  const [game, setGame] = useState<GameStates>("name")
 
   const addToCurrentScore = (score: number) => {
     setCurrentScore((prev) => prev + score)
-
     nextPlay()
   }
 
@@ -58,10 +57,19 @@ const Minigame = ({ guilds }: Props): JSX.Element => {
   }
 
   useEffect(() => {
-    if (difficulty === "easy") setGuildsToGuess(guilds.slice(0, 4))
+    if (difficulty === "easy") setGuildsToGuess(guilds.slice(0, 100))
     else if (difficulty === "medium") setGuildsToGuess(guilds.slice(0, 500))
     else if (difficulty === "hard") setGuildsToGuess(guilds.slice(0, 1000))
   }, [difficulty])
+
+  useEffect(() => {
+    const storedHighScore = localStorage.getItem("highScore")
+    if (storedHighScore) {
+      setHighScore(parseInt(storedHighScore))
+    } else {
+      setHighScore(0)
+    }
+  }, [])
 
   return (
     <>
@@ -88,7 +96,7 @@ const Minigame = ({ guilds }: Props): JSX.Element => {
         backgroundOffset={account ? 100 : 90}
         textColor="white"
       >
-        <Flex gap={2}>
+        <Flex gap={2} direction={{ base: "column", md: "row" }}>
           {game === "pair" && (
             <PairGame
               guilds={guildsToGuess}
@@ -104,15 +112,22 @@ const Minigame = ({ guilds }: Props): JSX.Element => {
             />
           )}
           {game === "newHighScore" && (
-            <NewHighScore startNewGame={newGame} highScore={currentScore} />
+            <NewHighScore
+              startNewGame={() => {
+                newGame()
+                setHighScore(currentScore)
+              }}
+              highScore={currentScore}
+            />
           )}
           {game === "gameOver" && (
-            <GameOver startNewGame={newGame} highScore={currentScore} />
+            <GameOver startNewGame={newGame} score={currentScore} />
           )}
           <MiniGameDashBoard
             difficulty={difficulty}
             setDifficulty={setDifficulty}
             currentScore={currentScore}
+            highScore={highScore}
           />
         </Flex>
       </Layout>

@@ -5,10 +5,10 @@ import { Trophy } from "phosphor-react"
 
 type Props = {
   startNewGame: () => void
-  highScore: number
+  score: number
 }
 
-const GameOver = ({ startNewGame, highScore }: Props): JSX.Element => {
+const GameOver = ({ startNewGame, score }: Props): JSX.Element => {
   const { colorMode } = useColorMode()
 
   return (
@@ -36,8 +36,9 @@ const GameOver = ({ startNewGame, highScore }: Props): JSX.Element => {
           fontWeight="bold"
           letterSpacing="wide"
           align="center"
+          pb={5}
         >
-          {highScore} points
+          {score} points
         </Text>
       </Flex>
 
