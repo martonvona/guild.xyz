@@ -9,15 +9,21 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react"
 import DisplayCard from "components/common/DisplayCard"
-import { DotsSixVertical, Users } from "phosphor-react"
+import { CheckCircle, DotsSixVertical, Users, XCircle } from "phosphor-react"
 import { GuildBase } from "types"
 import pluralize from "utils/pluralize"
 
 type Props = {
   guildData: GuildBase
+  showAnswer: boolean
+  isCorrect: boolean
 }
 
-const DropableGuildCard = ({ guildData }: Props): JSX.Element => {
+const DropableGuildCard = ({
+  guildData,
+  showAnswer,
+  isCorrect,
+}: Props): JSX.Element => {
   const background = useColorModeValue("blackAlpha.100", "whiteAlpha.100")
 
   return (
@@ -56,7 +62,19 @@ const DropableGuildCard = ({ guildData }: Props): JSX.Element => {
             </Tag>
           </Wrap>
         </VStack>
-        <DotsSixVertical size={32} />
+        {showAnswer ? (
+          isCorrect ? (
+            <Text color="green.400">
+              <CheckCircle size={32} />
+            </Text>
+          ) : (
+            <Text color="red.400">
+              <XCircle size={32} />
+            </Text>
+          )
+        ) : (
+          <DotsSixVertical size={32} />
+        )}
       </Grid>
     </DisplayCard>
   )
