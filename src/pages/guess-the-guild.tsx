@@ -103,12 +103,12 @@ export const getStaticProps: GetStaticProps = async () => {
     (_) => []
   )
 
-  const filteredGuilds = guilds.filter(
+  const guildsWithImage = guilds.filter(
     (guild: GuildBase) => guild.imageUrl !== "" && guild.imageUrl
   )
 
   return {
-    props: { guilds: filteredGuilds },
+    props: { guilds: guildsWithImage },
     revalidate: 300,
   }
 }

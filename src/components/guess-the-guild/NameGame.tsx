@@ -15,6 +15,7 @@ import image from "next/image"
 import { CheckCircle, Circle, XCircle } from "phosphor-react"
 import { useEffect, useRef, useState } from "react"
 import { GuildBase } from "types"
+import NoGuilds from "./NoGuilds"
 import { shuffle } from "./utils/shuffle"
 
 type Props = {
@@ -53,6 +54,8 @@ const NameGame = ({
   }
 
   const checkAnswer = () => guess === options.current[0].id
+
+  if (guilds.length < 4) return <NoGuilds />
 
   return (
     <ColorCard color="transparent" colorMode={colorMode} w="full">

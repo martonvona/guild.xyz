@@ -15,6 +15,7 @@ import image from "next/image"
 import { useEffect, useRef, useState } from "react"
 import { GuildBase } from "types"
 import DropableGuildCard from "./DropableGuildCrad"
+import NoGuilds from "./NoGuilds"
 
 type Props = {
   guilds: GuildBase[]
@@ -51,6 +52,8 @@ const PairGame = ({
       resetCurrentScore()
     }
   }
+
+  if (guilds.length < 4) return <NoGuilds />
 
   return (
     <ColorCard color="transparent" colorMode={colorMode} w="full">
