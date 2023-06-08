@@ -46,7 +46,7 @@ const PairGame = ({
 
   const handelScore = () => {
     if (checkAnswer()) {
-      addToCurrentScore(1)
+      addToCurrentScore(2)
     } else {
       resetCurrentScore()
     }
@@ -77,14 +77,20 @@ const PairGame = ({
             >
               {image && <GuildLogo imageUrl={option.imageUrl} />}
               {showAnswer && (
-                <Text fontSize={"xs"} pt={1} fontFamily="display">
+                <Text fontSize={"xs"} pt={1} fontFamily="display" align="center">
                   {option.name}
                 </Text>
               )}
             </Box>
           ))}
         </Flex>
-        <Reorder.Group axis="y" values={guildIds} onReorder={setGuildIds}>
+        <Reorder.Group
+          axis="y"
+          values={guildIds}
+          onReorder={(values) => {
+            if (!showAnswer) setGuildIds(values)
+          }}
+        >
           {guildIds?.map((id, index) => (
             <Reorder.Item key={id} value={id}>
               <DropableGuildCard

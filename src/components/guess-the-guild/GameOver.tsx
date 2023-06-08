@@ -2,6 +2,7 @@ import { Flex, Heading, Text, useColorMode } from "@chakra-ui/react"
 import Button from "components/common/Button"
 import ColorCard from "components/common/ColorCard/ColorCard"
 import { Trophy } from "phosphor-react"
+import { gameOverMessages } from "./utils/messages"
 
 type Props = {
   action: () => void
@@ -40,8 +41,16 @@ const GameOver = ({ action, score }: Props): JSX.Element => {
         >
           {score} points
         </Text>
+        <Text
+          fontSize="md"
+          fontFamily="display"
+          letterSpacing="wide"
+          align="center"
+          pb={5}
+        >
+          {gameOverMessages()}
+        </Text>
       </Flex>
-
       <Button h="10" colorScheme="purple" onClick={action}>
         New game
       </Button>

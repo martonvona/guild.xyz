@@ -1,4 +1,5 @@
 import {
+  Flex,
   Grid,
   Tag,
   TagLabel,
@@ -62,19 +63,21 @@ const DropableGuildCard = ({
             </Tag>
           </Wrap>
         </VStack>
-        {showAnswer ? (
-          isCorrect ? (
-            <Text color="green.400">
-              <CheckCircle size={32} />
-            </Text>
+        <Flex justifyContent={"flex-end"}>
+          {showAnswer ? (
+            isCorrect ? (
+              <Text color="green.400">
+                <CheckCircle size={32} />
+              </Text>
+            ) : (
+              <Text color="red.400">
+                <XCircle size={32} />
+              </Text>
+            )
           ) : (
-            <Text color="red.400">
-              <XCircle size={32} />
-            </Text>
-          )
-        ) : (
-          <DotsSixVertical size={32} />
-        )}
+            <DotsSixVertical size={32} />
+          )}
+        </Flex>
       </Grid>
     </DisplayCard>
   )

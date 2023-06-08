@@ -77,7 +77,9 @@ const NameGame = ({
             p={5}
             m={0}
           >
-            {image && <GuildLogo imageUrl={options.current[0].imageUrl} />}
+            {image && (
+              <GuildLogo imageUrl={options.current[0].imageUrl} size={"100px"} />
+            )}
             {showAnswer ? (
               <Text fontSize={"md"} pt={3} fontFamily="display">
                 {options.current[0].name}
@@ -96,10 +98,14 @@ const NameGame = ({
             key={id}
             shadow="none"
             bg={background}
+            px={{ base: 3, md: 4 }}
+            py={{ base: 4, md: 5 }}
             cursor="pointer"
             onClick={() => {
-              setGuess(id)
-              setShowAnswer(true)
+              if (!showAnswer) {
+                setGuess(id)
+                setShowAnswer(true)
+              }
             }}
           >
             <Grid templateColumns={"7fr 1fr"} gap={4} alignItems="center">
@@ -114,21 +120,23 @@ const NameGame = ({
               >
                 {options.current.find((option) => id === option.id).name}
               </Text>
-              {showAnswer && guess === id ? (
-                checkAnswer() ? (
-                  <Text color="green.400">
-                    <CheckCircle size={32} />
-                  </Text>
+              <Flex justifyContent={"flex-end"}>
+                {showAnswer && guess === id ? (
+                  checkAnswer() ? (
+                    <Text color="green.400">
+                      <CheckCircle size={32} />
+                    </Text>
+                  ) : (
+                    <Text color="red.400">
+                      <XCircle size={32} />
+                    </Text>
+                  )
                 ) : (
-                  <Text color="red.400">
-                    <XCircle size={32} />
+                  <Text color="gray.400">
+                    <Circle size={32} />
                   </Text>
-                )
-              ) : (
-                <Text color="gray.400">
-                  <Circle size={32} />
-                </Text>
-              )}
+                )}
+              </Flex>
             </Grid>
           </DisplayCard>
         ))}

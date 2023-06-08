@@ -3,6 +3,7 @@ import Button from "components/common/Button"
 import ColorCard from "components/common/ColorCard/ColorCard"
 import { Crown } from "phosphor-react"
 import { HIGH_SCORE_KEY } from "./utils/constants"
+import { newHighScoreMessages } from "./utils/messages"
 
 type Props = {
   action: () => void
@@ -31,8 +32,16 @@ const NewHighScore = ({ action, highScore }: Props): JSX.Element => {
         >
           {highScore} points
         </Text>
+        <Text
+          fontSize="md"
+          fontFamily="display"
+          letterSpacing="wide"
+          align="center"
+          pb={5}
+        >
+          {newHighScoreMessages()}
+        </Text>
       </Flex>
-
       <Button
         h="10"
         colorScheme="purple"
