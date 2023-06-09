@@ -76,10 +76,8 @@ const Minigame = ({ guilds }: Props): JSX.Element => {
           )}
           {gameState === "newHighScore" && (
             <NewHighScore
-              action={() => {
-                nextRound()
-                setHighScore(currentScore)
-              }}
+              action={nextRound}
+              setHighScore={setHighScore}
               highScore={currentScore}
             />
           )}
